@@ -27,7 +27,7 @@ app.config['SECRET_KEY']='llave_secre_jejeje'
 @app.route('/index')
 @app.route('/index.html')
 def inicio():
-    personas = Persona.query.all()
+    personas = Persona.query.order_by('id')
     total_personas = Persona.query.count()
     app.logger.debug(f'Listado de personas: {personas}')
     app.logger.debug(f'Total de personas: {total_personas}')
@@ -51,3 +51,23 @@ def agregar():
             db.session.commit()
             return redirect(url_for('inicio'))
     return render_template('agregar.html', forma=personaForm)
+
+@app.route('/editar/<int:id>', methods=['GET', 'POST'])
+def editar(id):
+    persona = Persona.query.get_or_404(id)
+    personaForm = PersonaForm(obj=persona)
+    if request.method == 'POST':
+        if personaForm.validate_on_submit():
+            personaForm.populate_obj(persona)
+            app.logger.debug(f'Persona ha actualizar: {persona}')
+            db.session.commit()
+            return redirect(url_for('inicio'))
+    return render_template('editar.html', forma=personaForm)
+
+@app.route('/eliminar/<int:id>')
+def eliminar(id):
+    persona = Persona.query.get_or_404(id)
+    app.logger.debug(f'Persona ha eliminar: {persona}')
+    db.session.delete(persona)
+    db.session.commit()
+    return redirect(url_for('inicio'))

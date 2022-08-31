@@ -16,6 +16,8 @@
                     <th>Apellido</th>
                     <th>Email</th>
                     <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +28,8 @@
                         <td>{{persona.apellido}}</td>
                         <td>{{persona.email}}</td>
                         <td><a href="ver/{{persona.id}}">Mas</a></td>
+                        <td><a href="editar/{{persona.id}}">Editar</a></td>
+                        <td><a href="eliminar/{{persona.id}}">Eliminar</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
